@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>myShity</title> 
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyBniKx30uA52VzIhYnCPaFOCsVtjA1Bj4M&sensor=false" 
+          type="text/javascript"></script>
+</head> 
+<body>
+  <div id="map" style="width: 500px; height: 400px;"></div>
+
+  <script type="text/javascript">
+    var eimer = [
+      ['Bin', 51.026561, 13.719682],
+      ['Bin', 51.026862, 13.717804],
+      ['Bin', 51.025991, 13.717472],
+      ['Bin', 51.027186, 13.719186],
+      ['Bin', 51.026038, 13.722737]
+    ];
+    var bags = [
+      ['Bagdispenser <br> Status: full', 51.027226, 13.715562],
+      ['Bagdispenser <br> Status: low', 51.028812, 13.718738]
+    ];
+
+    var myCenter = new google.maps.LatLng(51.026629, 13.719255);
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: myCenter,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+  disableDefaultUI: true,
+  scrollwheel: false,
+  navigationControl: false,
+  mapTypeControl: false,
+  scaleControl: false,
+  draggable: false,
+styles:[{
+        featureType:"poi",
+        elementType:"labels",
+        stylers:[{
+            visibility:"off"
+        }]
+    }]
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var circle ={
+    path: google.maps.SymbolPath.CIRCLE,
+    fillColor: 'red',
+    fillOpacity: .4,
+    scale: 4.5,
+    strokeColor: 'white',
+    strokeWeight: 1
+};
+
+    var arrow ={
+    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    fillColor: 'blue',
+    fillOpacity: .4,
+    scale: 4.5,
+    strokeColor: 'white',
+    strokeWeight: 1
+};
+var markerx=new google.maps.Marker({
+  position:myCenter
+  });
+
+markerx.setMap(map);
+
+    var marker, i;
+    var eimerzahl = eimer.length;
+
+    for (i = 0; i < eimerzahl; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(eimer[i][1], eimer[i][2]),
+        map: map,
+	icon:circle
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(eimer[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    };
+var dings = bags.length;
+var marker2, i;
+for (i = 0; i < dings; i++) {  
+      marker2 = new google.maps.Marker({
+        position: new google.maps.LatLng(bags[i][1], bags[i][2]),
+        map: map,
+	icon:arrow
+      });
+
+      google.maps.event.addListener(marker2, 'click', (function(marker2, i) {
+        return function() {
+          infowindow.setContent(bags[i][0]);
+          infowindow.open(map, marker2);
+        }
+      })(marker2, i));
+    }
+  </script>
+</body>
+</html>
